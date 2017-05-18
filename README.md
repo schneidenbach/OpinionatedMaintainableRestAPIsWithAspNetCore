@@ -3,7 +3,7 @@ Slides + links for my presentation, An Opinionated, Maintainable REST API Archit
 
 ## Useful Links
 
-### [View Slides](https://gitpitch.com/schneidenbach/TypeScriptTypeSystem)
+### [View Slides](https://gitpitch.com/schneidenbach/OpinionatedMaintainableRestAPIsWithAspNetCore)
 
 ## Presented/Presenting at:
 
