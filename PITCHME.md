@@ -14,16 +14,16 @@ rest.schneids.net
 
 ---
 
-## Setting the stage
+## <span style="color: #e49436">Setting the stage</span>
 
 "We need a new SPA"  
 "We need a new REST API"
 
 ---
 
-## ASP.NET Core
+## <span style="color: #e49436">ASP.NET Core</span>
 
-(you can also apply these to "old" ASP.NET MVC/Web API)
+###### (you can also apply these to "old" ASP.NET MVC/Web API)
 
 ---
 
