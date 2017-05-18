@@ -1,4 +1,5 @@
-### An <span style="color: #e49436">Opinionated</span> and <span style="color: #e49436">Maintainable</span> REST API Architecture for ASP.NET Core
+### An <span style="color: #e49436">Opinionated</span> and <span style="color: #e49436">Maintainable</span> REST API Architecture for 
+### <span class="blue">ASP.NET Core</span>
 
 #####  Spencer Schneidenbach
 
@@ -14,14 +15,14 @@ rest.schneids.net
 
 ---
 
-## <span style="color: #e49436">Setting the stage</span>
+## <span class="orange">Setting the stage</span>
 
 "We need a new SPA"  
 "We need a new REST API"
 
 ---
 
-## <span style="color: #e49436">ASP.NET Core</span>
+## <span class="blue">ASP.NET Core</span>
 
 ###### (you can also apply these to "old" ASP.NET MVC/Web API)
 
