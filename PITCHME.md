@@ -1,4 +1,4 @@
-###  An Opinionated, Maintainable REST API Architecture for ASP.NET Core
+### An <span style="color: #e49436">Opinionated</span> and <span style="color: #e49436">Maintainable</span> REST API Architecture for ASP.NET Core
 
 #####  Spencer Schneidenbach
 
