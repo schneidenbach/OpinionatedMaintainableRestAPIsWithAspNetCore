@@ -31,10 +31,6 @@ rest.schneids.net
 
 ---
 
-is it done yet
-
----
-
 Scaffolding
 
 ---
@@ -71,8 +67,6 @@ Return data
 
 ## Let's take a tour
 
----
-Attendees will learn about dependency injection, validating requests, executing requests via services, error handling, and versioning strategies to make sure your API lasts for the long haul.
 ---
 
 ## Introducing the Employee
@@ -175,6 +169,10 @@ public class Employee
 
 ---
 
+## Entity is also <span class="orange">request</span>
+
+---
+
 So let's break it apart
 
 ---
@@ -198,7 +196,7 @@ somewhere else
 
 ---
 
-Let's start with validation
+Let's start with the request
 
 ---
 
@@ -218,24 +216,177 @@ public class Employee
 ---
 
 Problem?
+## Entity being used for requests
 ## Model/model validation are not separate
 
 ---
 
-## <span class="orange">Clunky</span> to run and validate  
+## Rule 1: <span class="orange">separate entity from model</span>
+So let's refactor
+
+---
+
+```csharp
+public class Employee
+{
+    public int Id { get; set; }
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfHire { get; set; }
+    public string SocialSecurityNumber { get; set; }
+}
+```
+
+---
+
+## <span class="orange">Business rule</span>
+Can create Employee with SocialSecurityNumber but not update
+
+---
+
+## Create (POST)
+
+```csharp
+public class EmployeeCreateRequest
+{
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfHire { get; set; }
+    public string SocialSecurityNumber { get; set; }
+}
+```
+
+---
+
+## Update (PUT)
+
+```csharp
+public class EmployeeUpdateRequest
+{
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfHire { get; set; }
+}
+```
+
+---
+
+## Delete (DELETE)
+
+```csharp
+public class EmployeeDeleteRequest
+{
+    public int Id { get; set; }
+}
+```
+
+---
+
+
+
+---
+
+## <span class="orange">Clunky</span> to validate  
 (especially outside of ASP.NET)
 
 ---
 
-TODO: validation pic
+![](assets/validation clunkiness.png)
+
+[source](http://stackoverflow.com/questions/3400542/how-do-i-use-ivalidatableobject)
 
 ---
 
-# Rule 1: separate model and validation
+## Rule 2: <span class="orange">separate validation from model</span>
 
-## Introducing FluentValidation
+## Introducing <span class="orange">Fluent Validation</span>
 
-### <span class="yellow">WARNING - OPINION</span>
+---
+
+## <span class="orange">Fluent Validation</span>
+
+---
+
+```csharp
+public class EmployeeRequest
+{
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+}
+```
+
+---
+
+## Isolate <span class="orange">validation functionality</span>
+
+---
+
+```csharp
+public class EmployeeCreateValidator : AbstractValidator<EmployeeCreateRequest>
+{
+    public EmployeeValidator()
+    {
+        RuleFor(e => e.FirstName).NotEmpty().WithMessage("First name is required.")
+        RuleFor(e => e.LastName).NotEmpty().WithMessage("Last name is required.")
+    }
+}
+```
+
+---
+
+```csharp
+public class EmployeeCreateValidator : AbstractValidator<EmployeeCreateRequest>
+{
+    public EmployeeValidator()
+    {
+        RuleFor(e => e.FirstName).NotEmpty().WithMessage("First name is required.")
+        RuleFor(e => e.LastName).NotEmpty().WithMessage("Last name is required.")
+    }
+}
+```
+
+```csharp
+public class EmployeeCreateRequest
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+}
+```
+
+---
+
+## Then you can <span class="orange">test</span> independently
+
+```csharp
+[Test]
+public void EmployeeNameIsRequired()
+{
+    var request = new EmployeeCreateRequest();  //no props
+    var validator = new EmployeeCreateValidator();
+
+    var result = validator.Validate(request);
+    var firstNameMissing = result.Any(r => r.PropertyName == "FirstName");
+    var lastNameMissing = result.Any(r => r.PropertyName == "LastName");
+    
+    Assert.That(firstNameMissing, Is.EqualTo(true));
+    Assert.That(lastNameMissing, Is.EqualTo(true));
+}
+```
+
+---
+
+
 
 ---
 
