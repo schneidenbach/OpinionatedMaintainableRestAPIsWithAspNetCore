@@ -145,6 +145,15 @@ public class Employee
 
 ---
 
+![](assets/configure services.png)
+
+---
+
+![](assets/tour 1.png)
+
+
+---
+
 ![](assets/tour 2.png)
 
 ---
@@ -173,6 +182,22 @@ public class Employee
 
 ---
 
+```csharp
+public class Employee
+{
+    public int Id { get; set; }
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfHire { get; set; }
+    public string SocialSecurityNumber { get; set; }
+}
+```
+
+---
+
 So let's break it apart
 
 ---
@@ -185,6 +210,7 @@ Command Query Responsibility Segregation
 ## <span class="orange">Bottom line</span> - move:
 - Validation
 - Running service
+- Requests  
 somewhere else
 
 ---
@@ -333,8 +359,10 @@ public class EmployeeCreateValidator : AbstractValidator<EmployeeCreateRequest>
 {
     public EmployeeValidator()
     {
-        RuleFor(e => e.FirstName).NotEmpty().WithMessage("First name is required.")
-        RuleFor(e => e.LastName).NotEmpty().WithMessage("Last name is required.")
+        RuleFor(e => e.FirstName).NotEmpty()
+                .WithMessage("First name is required.")
+        RuleFor(e => e.LastName).NotEmpty()
+                .WithMessage("Last name is required.")
     }
 }
 ```
@@ -346,8 +374,10 @@ public class EmployeeCreateValidator : AbstractValidator<EmployeeCreateRequest>
 {
     public EmployeeValidator()
     {
-        RuleFor(e => e.FirstName).NotEmpty().WithMessage("First name is required.")
-        RuleFor(e => e.LastName).NotEmpty().WithMessage("Last name is required.")
+        RuleFor(e => e.FirstName).NotEmpty()
+                .WithMessage("First name is required.")
+        RuleFor(e => e.LastName).NotEmpty()
+                .WithMessage("Last name is required.")
     }
 }
 ```
@@ -391,7 +421,8 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
     public EmployeeValidator(ApplicationDbContext context)
     {
         Context = context;
-        RuleFor(e => e.Id).Must(ExistInDatabase).WithMessage("ID is required.")
+        RuleFor(e => e.Id).Must(ExistInDatabase)
+                .WithMessage("ID does not exist.")
     }
 
     public void ExistInDatabase(EmployeeDeleteRequest request) {
@@ -431,9 +462,7 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 ```csharp
 public class EmployeeCreateRequest : IRequest<int>
 {
-    [Required]
     public string FirstName { get; set; }
-    [Required]
     public string LastName { get; set; }
 }
 ```
@@ -479,7 +508,7 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
 public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
 {
     public EmployeeCreateHandler(
-        EmployeeCreateValidator[] validators, 
+        IValidator<EmployeeCreateRequest>[] validators, 
         ApplicationDbContext context) { ... }
 
     public int Handle(EmployeeCreateRequest request) {
@@ -503,7 +532,7 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
 ## Putting it all together
 1. Dependency injection handles... dependencies
 1. MediatR will handle request/responses
-1. Controller will route it all
+1. Controller will route <span class="orange">HTTP</span> requests
 
 ---
 
@@ -587,6 +616,23 @@ public IActionResult Post([FromBody] EmployeeCreateRequest request) {
 ---
 
 ## Write tests for everything
+
+---
+
+## Keep versions separate
+
+---
+
+```csharp
+builder.RegisterAssemblyTypes(typeof(Version1Validator).Assembly)
+    .AsImplementedInterfaces();
+builder.RegisterAssemblyTypes(typeof(Version1Service).Assembly)
+    .AsImplementedInterfaces();
+builder.RegisterAssemblyTypes(typeof(Version2Validator).Assembly)
+    .AsImplementedInterfaces();
+builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
+    .AsImplementedInterfaces();
+```
 
 ---
 
