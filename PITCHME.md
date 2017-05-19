@@ -36,14 +36,14 @@ Scaffolding
 ---
 
 The promise
-## Scaffolding is amazing
+## Scaffolding is <span class="orange">amazing</span>
 
 Productivity! Awesomeness!
 
 ---
 
 The reality
-## Scaffolding is a lie
+## Scaffolding is a <span class="orange">lie</span>
 
 ---
 
@@ -59,7 +59,7 @@ Return data
 
 ---
 
-## <span class="orange">Controller</span> needs to be
+## Controller should <span class="orange">only</span>
 Route the request  
 Return data
 
@@ -137,7 +137,7 @@ public class Employee
 
 ---
 
-## A wild <span class="orange">EmployeeController</span> appeared
+### A wild <span class="orange">EmployeeController</span> appeared
 
 ---
 
@@ -182,7 +182,7 @@ Command Query Responsibility Segregation
 
 ---
 
-Bottom line - move:
+## <span class="orange">Bottom line</span> - move:
 - Validation
 - Running service
 somewhere else
@@ -291,10 +291,6 @@ public class EmployeeDeleteRequest
 
 ---
 
-
-
----
-
 ## <span class="orange">Clunky</span> to validate  
 (especially outside of ASP.NET)
 
@@ -386,7 +382,225 @@ public void EmployeeNameIsRequired()
 
 ---
 
+## Tests can also have dependencies
 
+```csharp
+public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
+{
+    public ApplicationDbContext Context { get; }
+    public EmployeeValidator(ApplicationDbContext context)
+    {
+        Context = context;
+        RuleFor(e => e.Id).Must(ExistInDatabase).WithMessage("ID is required.")
+    }
+
+    public void ExistInDatabase(EmployeeDeleteRequest request) {
+        return Context.Employee.Find(request.Id) != null;
+    }
+}
+```
+
+---
+
+## What we've accomplished
+- Separated request model from entity
+- Separated validation from request model
+
+---
+
+## Next: Extracting services
+
+---
+
+![](assets/tour 4.png)
+
+---
+
+### Rule 3: <span class="orange">separate request handler from controller</span>
+
+## Introducing <span class="orange">MediatR</span>
+
+---
+
+## <span class="orange">MediatR</span>
+* Request
+* Handlers
+
+---
+
+```csharp
+public class EmployeeCreateRequest : IRequest<int>
+{
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+}
+```
+
+---
+
+```csharp
+public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
+{
+    public EmployeeCreateHandler(ApplicationDbContext context) { ... }
+
+    public int Handle(EmployeeCreateRequest request) {
+        var newEmployee = new Employee {
+            FirstName = request.FirstName,
+            LastName = request.LastName
+        };
+        Context.Employee.Add(newEmployee);
+        Context.SaveChanges();
+        return newEmployee.Id;
+    }
+}
+```
+
+---
+
+```csharp
+public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
+{
+    public EmployeeCreateHandler(ApplicationDbContext context) { ... }
+
+    public int Handle(EmployeeCreateRequest request) {
+        var newEmployee = Mapper.Map<Employee>(request);
+        Context.Employee.Add(newEmployee);
+        Context.SaveChanges();
+        return newEmployee.Id;
+    }
+}
+```
+
+---
+
+```csharp
+public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
+{
+    public EmployeeCreateHandler(
+        EmployeeCreateValidator[] validators, 
+        ApplicationDbContext context) { ... }
+
+    public int Handle(EmployeeCreateRequest request) {
+        //validate here first
+        var newEmployee = Mapper.Map<Employee>(request);
+        Context.Employee.Add(newEmployee);
+        Context.SaveChanges();
+        return newEmployee.Id;
+    }
+}
+```
+
+---
+
+## <span class="orange">Benefits</span>
+
+- Independently testable
+
+---
+
+## Putting it all together
+1. Dependency injection handles... dependencies
+1. MediatR will handle request/responses
+1. Controller will route it all
+
+---
+
+### Rule 4: Use <span class="orange">Better</span> DI container
+
+## Introducing <span class="orange">AutoFac</span>
+
+---
+
+## Use <span class="orange">AutoFac</span> to
+- Scan assemblies for services/validators
+- Add them to service pipeline
+
+---
+
+```csharp
+public IServiceProvider ConfigureServices(IServiceCollection services)
+{
+    // Add services to the collection.
+    services.AddMvc();
+
+    // Create the container builder.
+    var builder = new ContainerBuilder();
+
+    // Register dependencies
+    builder.RegisterAssemblyTypes(typeof(Validator).Assembly)
+        .AsImplementedInterfaces();
+    builder.RegisterAssemblyTypes(typeof(Service).Assembly)
+        .AsImplementedInterfaces();
+    builder.Populate(services);
+    this.ApplicationContainer = builder.Build();
+
+    // Create the IServiceProvider based on the container.
+    return new AutofacServiceProvider(this.ApplicationContainer);
+}
+```
+
+---
+
+## Add MediatR to controller
+
+```csharp
+public class EmployeesController
+{
+    public IMediator Mediator { get; }
+
+    public EmployeesController(IMediator mediator) {
+        Mediator = mediator;
+    }
+}
+```
+
+---
+
+## Finally, the controller
+
+```csharp
+public IActionResult Post([FromBody] EmployeeCreateRequest request) {
+    try
+    {
+        var newId = Mediator.HandleRequest(request);
+        return CreatedAtAction("GetEmployee", new { id = employee.Id });
+    } 
+    catch (ValidationException ex)
+    {
+        return BadRequest(ex.ConvertToModelState());
+    }
+}
+```
+
+---
+
+## <span class="orange">Tips</span>
+
+---
+
+## Create repeatable patterns
+
+[more complete example](https://lostechies.com/jimmybogard/2014/09/09/tackling-cross-cutting-concerns-with-a-mediator-pipeline/)
+
+---
+
+## Write tests for everything
+
+---
+
+## <span class="orange">Concerns</span>
+
+- May be unnecessary complexity
+- Bigger learning curve
+
+---
+
+## <span class="orange">Good For</span>
+
+- Medium-to-large applications
+- Reusability
 
 ---
 
