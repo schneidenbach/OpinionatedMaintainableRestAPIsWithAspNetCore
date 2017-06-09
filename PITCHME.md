@@ -42,29 +42,6 @@ Productivity! Awesomeness!
 
 ---
 
-The reality
-## Scaffolding is a <span class="orange">lie</span>
-
----
-
-## <span class="orange">Controller</span> is a one man army
-Route the request  
-Validate  
-Run service for request  
-Return data
-
----
-
-## No <span class="orange">separation of concerns</span>
-
----
-
-## Controller should <span class="orange">only</span>
-Route the request  
-Return data
-
----
-
 ## Let's take a tour
 
 ---
@@ -170,11 +147,33 @@ public class Employee
 
 ---
 
-## What's wrong with this?
+The promise
+## Scaffolding is <span class="orange">amazing</span>
+
+Productivity! Awesomeness!
 
 ---
 
-## Controller is doing <span class="orange">everything!</span>
+The reality
+## Scaffolding is a <span class="orange">lie</span>
+
+---
+
+## <span class="orange">Controller</span> is a one man army
+Route the request  
+Validate  
+Run service for request  
+Return data
+
+---
+
+## No <span class="orange">separation of concerns</span>
+
+---
+
+## Controller should <span class="orange">only</span>
+Route the request  
+Return data
 
 ---
 
@@ -242,12 +241,12 @@ public class Employee
 ---
 
 Problem?
-### <span class="orange">Entity</span> being used for requests
-### Model/model validation are not separate
+### <span class="orange">Entity</span> being used for <span class="orange">requests</span>
+### <span class="orange">Model/model validation</span> are not <span class="orange">separate</span>
 
 ---
 
-### Rule 1: <span class="orange">separate entity from model</span>
+### Rule 1: separate <span class="orange">entity</span> from <span class="orange">model</span>
 So let's refactor
 
 ---
@@ -467,6 +466,8 @@ public class EmployeeCreateRequest : IRequest<int>
 }
 ```
 
+@[1]
+
 ---
 
 ```csharp
@@ -486,12 +487,37 @@ public class EmployeeCreateHandler
     }
 }
 
-@[8-9]
 ```
+
+@[2]
+@[6]
 
 ---
 
-<iframe src="https://giphy.com/embed/JzOyy8vKMCwvK" width="480" height="361" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/JzOyy8vKMCwvK">via GIPHY</a></p>
+```csharp
+public class EmployeeCreateHandler 
+    : IRequestHandler<EmployeeCreateRequest, int>
+{
+    public EmployeeCreateHandler(ApplicationDbContext context) { ... }
+
+    public int Handle(EmployeeCreateRequest request) {
+        var newEmployee = new Employee {
+            FirstName = request.FirstName,
+            LastName = request.LastName
+        };
+        Context.Employee.Add(newEmployee);
+        Context.SaveChanges();
+        return newEmployee.Id;
+    }
+}
+
+```
+
+@[8-9]
+
+---
+
+<iframe src="https://giphy.com/embed/JzOyy8vKMCwvK" width="480" height="361" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
 
 ---
 
@@ -509,6 +535,8 @@ public class EmployeeCreateHandler
     }
 }
 ```
+
+@[7]
 
 ---
 
@@ -534,6 +562,7 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
 ## <span class="orange">Benefits</span>
 
 - Independently testable
+- Reusable
 
 ---
 
@@ -577,8 +606,8 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
     return new AutofacServiceProvider(this.ApplicationContainer);
 }
 ```
-
-@[10-13]
+@[1]
+@[7-13]
 
 ---
 
@@ -654,7 +683,7 @@ builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
 
 ---
 
-## <span class="orange">Good For</span>
+## <span class="orange">Best For</span>
 
 - Medium-to-large applications
 - Reusability
