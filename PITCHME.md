@@ -42,6 +42,10 @@ Productivity! Awesomeness!
 
 ---
 
+<iframe src="https://giphy.com/embed/12NUbkX6p4xOO4" width="480" height="440" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+
+---
+
 ## Let's take a tour
 
 ---
@@ -114,7 +118,7 @@ public class Employee
 
 ---
 
-### A wild <span class="orange">EmployeeController</span> appeared
+### A wild `<span class="orange">EmployeesController</span>` appeared
 
 ---
 
