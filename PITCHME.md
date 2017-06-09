@@ -42,26 +42,7 @@ Productivity! Awesomeness!
 
 ---
 
-The reality
-## Scaffolding is a <span class="orange">lie</span>
-
----
-
-## <span class="orange">Controller</span> is a one man army
-Route the request  
-Validate  
-Run service for request  
-Return data
-
----
-
-## No <span class="orange">separation of concerns</span>
-
----
-
-## Controller should <span class="orange">only</span>
-Route the request  
-Return data
+<iframe src="https://giphy.com/embed/12NUbkX6p4xOO4" width="480" height="440" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
 
 ---
 
@@ -101,7 +82,7 @@ public class Employee
 
 ---
 
-## ASP.NET Core + Entity Framework Core
+#### <span class="orange">ASP.NET Core</span> + <span class="orange">Entity Framework Core</span>
 
 ###### (or ASP.NET Web API + EF6)
 ###### (or ASP.NET Web API + a database)
@@ -137,7 +118,7 @@ public class Employee
 
 ---
 
-### A wild <span class="orange">EmployeeController</span> appeared
+### A wild <span class="orange">`EmployeesController`</span> appeared
 
 ---
 
@@ -170,11 +151,33 @@ public class Employee
 
 ---
 
-## What's wrong with this?
+The promise
+## Scaffolding is <span class="orange">amazing</span>
+
+Productivity! Awesomeness!
 
 ---
 
-## Controller is doing <span class="orange">everything!</span>
+The reality
+## Scaffolding is a <span class="orange">lie</span>
+
+---
+
+## <span class="orange">Controller</span> is a one man army
+Route the request  
+Validate  
+Run service for request  
+Return data
+
+---
+
+## No <span class="orange">separation of concerns</span>
+
+---
+
+## Controller should <span class="orange">only</span>
+Route the request  
+Return data
 
 ---
 
@@ -242,12 +245,12 @@ public class Employee
 ---
 
 Problem?
-## Entity being used for requests
-## Model/model validation are not separate
+### <span class="orange">Entity</span> being used for <span class="orange">requests</span>
+### <span class="orange">Model/model validation</span> are not <span class="orange">separate</span>
 
 ---
 
-## Rule 1: <span class="orange">separate entity from model</span>
+### Rule 1: separate <span class="orange">entity</span> from <span class="orange">model</span>
 So let's refactor
 
 ---
@@ -328,9 +331,9 @@ public class EmployeeDeleteRequest
 
 ---
 
-## Rule 2: <span class="orange">separate validation from model</span>
+### Rule 2: separate <span class="orange">validation</span> from <span class="orange">model</span>
 
-## Introducing <span class="orange">Fluent Validation</span>
+### Introducing <span class="orange">Fluent Validation</span>
 
 ---
 
@@ -350,7 +353,7 @@ public class EmployeeRequest
 
 ---
 
-## Isolate <span class="orange">validation functionality</span>
+## <span class="orange">Isolate</span> validation functionality
 
 ---
 
@@ -439,7 +442,7 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 
 ---
 
-## Next: Extracting services
+## Next: Extracting <span class="orange">services</span>
 
 ---
 
@@ -447,14 +450,14 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 
 ---
 
-### Rule 3: <span class="orange">separate request handler from controller</span>
+### Rule 3: separate <span class="orange">request handler</span> from <span class="orange">controller</span>
 
 ## Introducing <span class="orange">MediatR</span>
 
 ---
 
 ## <span class="orange">MediatR</span>
-* Request
+* Requests
 * Handlers
 
 ---
@@ -467,10 +470,13 @@ public class EmployeeCreateRequest : IRequest<int>
 }
 ```
 
+@[1]
+
 ---
 
 ```csharp
-public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
+public class EmployeeCreateHandler 
+    : IRequestHandler<EmployeeCreateRequest, int>
 {
     public EmployeeCreateHandler(ApplicationDbContext context) { ... }
 
@@ -484,12 +490,44 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
         return newEmployee.Id;
     }
 }
+
 ```
+
+@[2]
+@[6]
 
 ---
 
 ```csharp
-public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
+public class EmployeeCreateHandler 
+    : IRequestHandler<EmployeeCreateRequest, int>
+{
+    public EmployeeCreateHandler(ApplicationDbContext context) { ... }
+
+    public int Handle(EmployeeCreateRequest request) {
+        var newEmployee = new Employee {
+            FirstName = request.FirstName,
+            LastName = request.LastName
+        };
+        Context.Employee.Add(newEmployee);
+        Context.SaveChanges();
+        return newEmployee.Id;
+    }
+}
+
+```
+
+@[8-9]
+
+---
+
+<iframe src="https://giphy.com/embed/JzOyy8vKMCwvK" width="480" height="361" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+
+---
+
+```csharp
+public class EmployeeCreateHandler 
+    : IRequestHandler<EmployeeCreateRequest, int>
 {
     public EmployeeCreateHandler(ApplicationDbContext context) { ... }
 
@@ -501,6 +539,8 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
     }
 }
 ```
+
+@[7]
 
 ---
 
@@ -526,6 +566,7 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
 ## <span class="orange">Benefits</span>
 
 - Independently testable
+- Reusable
 
 ---
 
@@ -558,8 +599,6 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
     var builder = new ContainerBuilder();
 
     // Register dependencies
-    builder.RegisterAssemblyTypes(typeof(Validator).Assembly)
-        .AsImplementedInterfaces();
     builder.RegisterAssemblyTypes(typeof(Service).Assembly)
         .AsImplementedInterfaces();
     builder.Populate(services);
@@ -569,6 +608,8 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
     return new AutofacServiceProvider(this.ApplicationContainer);
 }
 ```
+@[1]
+@[7-11]
 
 ---
 
@@ -603,6 +644,10 @@ public IActionResult Post([FromBody] EmployeeCreateRequest request) {
 }
 ```
 
+@[4]
+@[5]
+@[7-10]
+
 ---
 
 ## <span class="orange">Tips</span>
@@ -624,12 +669,9 @@ public IActionResult Post([FromBody] EmployeeCreateRequest request) {
 ---
 
 ```csharp
-builder.RegisterAssemblyTypes(typeof(Version1Validator).Assembly)
-    .AsImplementedInterfaces();
 builder.RegisterAssemblyTypes(typeof(Version1Service).Assembly)
     .AsImplementedInterfaces();
-builder.RegisterAssemblyTypes(typeof(Version2Validator).Assembly)
-    .AsImplementedInterfaces();
+    
 builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
     .AsImplementedInterfaces();
 ```
@@ -643,7 +685,7 @@ builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
 
 ---
 
-## <span class="orange">Good For</span>
+## <span class="orange">Best For</span>
 
 - Medium-to-large applications
 - Reusability
