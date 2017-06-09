@@ -118,7 +118,7 @@ public class Employee
 
 ---
 
-### A wild `<span class="orange">EmployeesController</span>` appeared
+### A wild <span class="orange">`EmployeesController`</span> appeared
 
 ---
 
