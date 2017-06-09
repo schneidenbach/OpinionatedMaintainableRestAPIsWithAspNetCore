@@ -82,7 +82,7 @@ public class Employee
 
 ---
 
-## ASP.NET Core + Entity Framework Core
+#### <span class="orange">ASP.NET Core</span> + <span class="orange">Entity Framework Core</span>
 
 ###### (or ASP.NET Web API + EF6)
 ###### (or ASP.NET Web API + a database)
