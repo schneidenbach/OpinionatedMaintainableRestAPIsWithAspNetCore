@@ -242,12 +242,12 @@ public class Employee
 ---
 
 Problem?
-## Entity being used for requests
-## Model/model validation are not separate
+### <span class="orange">Entity</span> being used for requests
+### Model/model validation are not separate
 
 ---
 
-## Rule 1: <span class="orange">separate entity from model</span>
+### Rule 1: <span class="orange">separate entity from model</span>
 So let's refactor
 
 ---
@@ -328,9 +328,9 @@ public class EmployeeDeleteRequest
 
 ---
 
-## Rule 2: <span class="orange">separate validation from model</span>
+### Rule 2: separate <span class="orange">validation</span> from <span class="orange">model</span>
 
-## Introducing <span class="orange">Fluent Validation</span>
+### Introducing <span class="orange">Fluent Validation</span>
 
 ---
 
@@ -350,7 +350,7 @@ public class EmployeeRequest
 
 ---
 
-## Isolate <span class="orange">validation functionality</span>
+## <span class="orange">Isolate</span> validation functionality
 
 ---
 
@@ -439,7 +439,7 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 
 ---
 
-## Next: Extracting services
+## Next: Extracting <span class="orange">services</span>
 
 ---
 
@@ -447,14 +447,14 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 
 ---
 
-### Rule 3: <span class="orange">separate request handler from controller</span>
+### Rule 3: separate <span class="orange">request handler</span> from <span class="orange">controller</span>
 
 ## Introducing <span class="orange">MediatR</span>
 
 ---
 
 ## <span class="orange">MediatR</span>
-* Request
+* Requests
 * Handlers
 
 ---
@@ -470,7 +470,8 @@ public class EmployeeCreateRequest : IRequest<int>
 ---
 
 ```csharp
-public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
+public class EmployeeCreateHandler 
+    : IRequestHandler<EmployeeCreateRequest, int>
 {
     public EmployeeCreateHandler(ApplicationDbContext context) { ... }
 
@@ -484,12 +485,19 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
         return newEmployee.Id;
     }
 }
+
+@[8-9]
 ```
 
 ---
 
+<iframe src="https://giphy.com/embed/JzOyy8vKMCwvK" width="480" height="361" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/JzOyy8vKMCwvK">via GIPHY</a></p>
+
+---
+
 ```csharp
-public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
+public class EmployeeCreateHandler 
+    : IRequestHandler<EmployeeCreateRequest, int>
 {
     public EmployeeCreateHandler(ApplicationDbContext context) { ... }
 
@@ -570,6 +578,8 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
 }
 ```
 
+@[10-13]
+
 ---
 
 ## Add MediatR to controller
@@ -603,6 +613,10 @@ public IActionResult Post([FromBody] EmployeeCreateRequest request) {
 }
 ```
 
+@[4]
+@[5]
+@[7-10]
+
 ---
 
 ## <span class="orange">Tips</span>
@@ -624,12 +638,9 @@ public IActionResult Post([FromBody] EmployeeCreateRequest request) {
 ---
 
 ```csharp
-builder.RegisterAssemblyTypes(typeof(Version1Validator).Assembly)
-    .AsImplementedInterfaces();
 builder.RegisterAssemblyTypes(typeof(Version1Service).Assembly)
     .AsImplementedInterfaces();
-builder.RegisterAssemblyTypes(typeof(Version2Validator).Assembly)
-    .AsImplementedInterfaces();
+    
 builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
     .AsImplementedInterfaces();
 ```
