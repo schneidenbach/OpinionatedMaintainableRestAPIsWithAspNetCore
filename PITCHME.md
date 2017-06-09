@@ -595,8 +595,6 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
     var builder = new ContainerBuilder();
 
     // Register dependencies
-    builder.RegisterAssemblyTypes(typeof(Validator).Assembly)
-        .AsImplementedInterfaces();
     builder.RegisterAssemblyTypes(typeof(Service).Assembly)
         .AsImplementedInterfaces();
     builder.Populate(services);
@@ -607,7 +605,7 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
 }
 ```
 @[1]
-@[7-13]
+@[7-11]
 
 ---
 
