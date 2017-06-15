@@ -479,7 +479,7 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 
 ---
 
-![](assets/tour-4.png)
+![](assets/tour4.png)
 
 ---
 
@@ -575,7 +575,8 @@ public class EmployeeCreateHandler
 }
 ```
 
-@[7]
+@[6]
+@[9]
 
 ---
 
