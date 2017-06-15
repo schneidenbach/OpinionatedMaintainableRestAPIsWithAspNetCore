@@ -6,7 +6,9 @@
 
 ---
 
+<div style="padding: 10px; background-color: white;">
 ![](assets/hws.png)
+</div>
 
 Coming July 15th!
 
