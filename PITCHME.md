@@ -479,7 +479,7 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 
 ---
 
-![](assets/tour 4.png)
+![](assets/tour-4.png)
 
 ---
 
@@ -562,7 +562,9 @@ public class EmployeeCreateHandler
 public class EmployeeCreateHandler 
     : IRequestHandler<EmployeeCreateRequest, int>
 {
-    public EmployeeCreateHandler(ApplicationDbContext context) { ... }
+    public EmployeeCreateHandler(
+        ApplicationDbContext context,
+        IMapper mapper) { ... }
 
     public int Handle(EmployeeCreateRequest request) {
         var newEmployee = Mapper.Map<Employee>(request);
@@ -582,7 +584,8 @@ public class EmployeeCreateHandler : IRequestHandler<EmployeeCreateRequest, int>
 {
     public EmployeeCreateHandler(
         IValidator<EmployeeCreateRequest>[] validators, 
-        ApplicationDbContext context) { ... }
+        ApplicationDbContext context,
+        IMapper mapper) { ... }
 
     public int Handle(EmployeeCreateRequest request) {
         //validate here first
@@ -646,7 +649,7 @@ public IServiceProvider ConfigureServices(IServiceCollection services)
 
 ---
 
-## Add MediatR to controller
+## Add <span class="orange">MediatR</span> to controller
 
 ```csharp
 public class EmployeesController
@@ -661,7 +664,7 @@ public class EmployeesController
 
 ---
 
-## Finally, the controller
+## Finally, the <span class="orange">controller</span>
 
 ```csharp
 public IActionResult Post([FromBody] EmployeeCreateRequest request) {
@@ -687,13 +690,13 @@ public IActionResult Post([FromBody] EmployeeCreateRequest request) {
 
 ---
 
-## Create repeatable patterns
+## Create repeatable <span class="orange">patterns</span>
 
 [more complete example](https://lostechies.com/jimmybogard/2014/09/09/tackling-cross-cutting-concerns-with-a-mediator-pipeline/)
 
 ---
 
-## Write tests for everything
+## Write <span class="orange">tests</span> for everything
 
 ---
 
@@ -721,7 +724,7 @@ builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
 ## <span class="orange">Best For</span>
 
 - Medium-to-large applications
-- Reusability
+- Reliability
 
 ---
 
