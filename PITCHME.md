@@ -6,6 +6,12 @@
 
 ---
 
+![](assets/hws.png)
+
+Coming July 15th!
+
+---
+
 Twitter [@schneidenbach](https://twitter.com/schneidenbach)  
 
 ## Slides plus more at
@@ -31,7 +37,7 @@ rest.schneids.net
 
 ---
 
-Scaffolding
+# Scaffolding
 
 ---
 
@@ -65,6 +71,31 @@ public class Employee
     public string SocialSecurityNumber { get; set; }
 }
 ```
+---
+
+```csharp
+    public string SocialSecurityNumber { get; set; }
+```
+
+---
+
+# Norway! Yay!
+
+```csharp
+public class Employee
+{
+    public int Id { get; set; }
+    [Required]
+    public string FirstName { get; set; }
+    [Required]
+    public string LastName { get; set; }
+    public DateTime DateOfBirth { get; set; }
+    public DateTime DateOfHire { get; set; }
+    public string BirthNumber { get; set; }
+}
+```
+
+### fødselsnummer?
 
 ---
 
@@ -98,23 +129,23 @@ public class Employee
 
 ## <span class="orange">Startup.cs</span>
 
-![](assets/configure services.png)
+![](assets/configure-services.png)
 
 ---
 
-![](assets/1. project with employee model.png)
+![](assets/1-project.png)
 
 ---
 
-![](assets/2. add controller.png)
+![](assets/2-controller.png)
 
 ---
 
-![](assets/3. create controller.png)
+![](assets/3-create-controller.png)
 
 ---
 
-![](assets/4. controller options.png)
+![](assets/4-controller-options.png)
 
 ---
 
@@ -122,32 +153,32 @@ public class Employee
 
 ---
 
-![](assets/tour 1.png)
+![](assets/tour1.png)
 
 ---
 
-![](assets/configure services.png)
+![](assets/configure-services.png)
 
 ---
 
-![](assets/tour 1.png)
+![](assets/tour1.png)
 
 
 ---
 
-![](assets/tour 2.png)
+![](assets/tour2.png)
 
 ---
 
-![](assets/tour 3.png)
+![](assets/tour3.png)
 
 ---
 
-![](assets/tour 4.png)
+![](assets/tour4.png)
 
 ---
 
-![](assets/tour 5.png)
+![](assets/tour5.png)
 
 ---
 
@@ -195,7 +226,7 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string SocialSecurityNumber { get; set; }
+    public string BirthNumber { get; set; }
 }
 ```
 
@@ -239,7 +270,7 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string SocialSecurityNumber { get; set; }
+    public string BirthNumber { get; set; }
 }
 ```
 ---
@@ -265,14 +296,14 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string SocialSecurityNumber { get; set; }
+    public string BirthNumber { get; set; }
 }
 ```
 
 ---
 
 ## <span class="orange">Business rule</span>
-Can create Employee with SocialSecurityNumber but not update
+Can create Employee with BirthNumber but not update
 
 ---
 
@@ -287,7 +318,7 @@ public class EmployeeCreateRequest
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string SocialSecurityNumber { get; set; }
+    public string BirthNumber { get; set; }
 }
 ```
 
@@ -325,7 +356,7 @@ public class EmployeeDeleteRequest
 
 ---
 
-![](assets/validation clunkiness.png)
+![](assets/validation-clunkiness.png)
 
 [source](http://stackoverflow.com/questions/3400542/how-do-i-use-ivalidatableobject)
 
