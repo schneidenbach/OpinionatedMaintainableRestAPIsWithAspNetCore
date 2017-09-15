@@ -725,8 +725,8 @@ builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
 
 ---
 
-## More resources
-### <span class="orange">Example Project</span>
+## <span class="orange">More resources</span>
+### Including Example Project
 
 rest.schneids.net
 
