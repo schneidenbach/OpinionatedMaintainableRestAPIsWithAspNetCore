@@ -4,6 +4,7 @@ Slides + links for my presentation, An Opinionated, Maintainable REST API Archit
 ## Useful Links
 
 ### [View Slides](https://gitpitch.com/schneidenbach/OpinionatedMaintainableRestAPIsWithAspNetCore)
+[https://github.com/schneidenbach/RecessOpinionatedApiInAspNetCore](Recess - an example code repo based on this talk)
 
 ## Presented/Presenting at:
 
