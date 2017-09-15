@@ -6,14 +6,6 @@
 
 ---
 
-<div style="padding: 10px; background-color: white;">
-![](assets/hws.png)
-</div>
-
-Coming July 15th!
-
----
-
 Twitter [@schneidenbach](https://twitter.com/schneidenbach)  
 
 ## Slides plus more at
@@ -81,7 +73,7 @@ public class Employee
 
 ---
 
-# Norway! Yay!
+# Poland! Yay!
 
 ```csharp
 public class Employee
@@ -93,11 +85,11 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string BirthNumber { get; set; }
+    public string PeselNumber { get; set; }
 }
 ```
 
-### fødselsnummer?
+### PESEL?
 
 ---
 
@@ -228,13 +220,13 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string BirthNumber { get; set; }
+    public string PeselNumber { get; set; }
 }
 ```
 
 ---
 
-So let's break it apart
+So let's <span class="orange">break it apart</span>
 
 ---
 
@@ -272,7 +264,7 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string BirthNumber { get; set; }
+    public string PeselNumber { get; set; }
 }
 ```
 ---
@@ -298,18 +290,18 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string BirthNumber { get; set; }
+    public string PeselNumber { get; set; }
 }
 ```
 
 ---
 
 ## <span class="orange">Business rule</span>
-Can create Employee with BirthNumber but not update
+Can create Employee with PeselNumber but not update
 
 ---
 
-## Create (POST)
+## Create (`POST`)
 
 ```csharp
 public class EmployeeCreateRequest
@@ -320,13 +312,13 @@ public class EmployeeCreateRequest
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string BirthNumber { get; set; }
+    public string PeselNumber { get; set; }
 }
 ```
 
 ---
 
-## Update (PUT)
+## Update (`PUT`)
 
 ```csharp
 public class EmployeeUpdateRequest
@@ -342,7 +334,7 @@ public class EmployeeUpdateRequest
 
 ---
 
-## Delete (DELETE)
+## Delete (`DELETE`)
 
 ```csharp
 public class EmployeeDeleteRequest
@@ -469,7 +461,7 @@ public class EmployeeDeleteValidator : AbstractValidator<EmployeeDeleteRequest>
 
 ---
 
-## What we've accomplished
+## <span class="orange">What we've accomplished</span>
 - Separated request model from entity
 - Separated validation from request model
 
@@ -729,7 +721,12 @@ builder.RegisterAssemblyTypes(typeof(Version2Service).Assembly)
 
 ---
 
-### More resources
+## One more thing...
+
+---
+
+## More resources
+### <span class="orange">Example Project</span>
 
 rest.schneids.net
 
