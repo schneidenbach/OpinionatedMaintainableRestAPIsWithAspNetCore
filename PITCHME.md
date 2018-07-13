@@ -65,31 +65,6 @@ public class Employee
     public string SocialSecurityNumber { get; set; }
 }
 ```
----
-
-```csharp
-    public string SocialSecurityNumber { get; set; }
-```
-
----
-
-# Poland! Yay!
-
-```csharp
-public class Employee
-{
-    public int Id { get; set; }
-    [Required]
-    public string FirstName { get; set; }
-    [Required]
-    public string LastName { get; set; }
-    public DateTime DateOfBirth { get; set; }
-    public DateTime DateOfHire { get; set; }
-    public string PeselNumber { get; set; }
-}
-```
-
-### PESEL?
 
 ---
 
@@ -220,7 +195,7 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string PeselNumber { get; set; }
+    public string SocialSecurityNumber { get; set; }
 }
 ```
 
@@ -264,7 +239,7 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string PeselNumber { get; set; }
+    public string SocialSecurityNumber { get; set; }
 }
 ```
 ---
@@ -290,14 +265,14 @@ public class Employee
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string PeselNumber { get; set; }
+    public string SocialSecurityNumber { get; set; }
 }
 ```
 
 ---
 
 ## <span class="orange">Business rule</span>
-Can create Employee with PeselNumber but not update
+Can create Employee with SocialSecurityNumber but not update
 
 ---
 
@@ -312,7 +287,7 @@ public class EmployeeCreateRequest
     public string LastName { get; set; }
     public DateTime DateOfBirth { get; set; }
     public DateTime DateOfHire { get; set; }
-    public string PeselNumber { get; set; }
+    public string SocialSecurityNumber { get; set; }
 }
 ```
 
@@ -660,10 +635,10 @@ public class EmployeesController
 ## Finally, the <span class="orange">controller</span>
 
 ```csharp
-public IActionResult Post([FromBody] EmployeeCreateRequest request) {
+public async Task<IActionResult> Post([FromBody] EmployeeCreateRequest request) {
     try
     {
-        var newId = Mediator.HandleRequest(request);
+        var newId = await Mediator.Send(request);
         return CreatedAtAction("GetEmployee", new { id = employee.Id });
     } 
     catch (ValidationException ex)
