@@ -525,6 +525,10 @@ public class EmployeeCreateHandler
 
 ---
 
+# AutoMapper
+
+---
+
 ```csharp
 public class EmployeeCreateHandler 
     : IRequestHandler<EmployeeCreateRequest, int>
